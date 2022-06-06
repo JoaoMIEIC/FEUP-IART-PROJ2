@@ -4,7 +4,10 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler
 from sklearn.neighbors import KNeighborsClassifier
+from collections import Counter
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 
@@ -25,6 +28,18 @@ labels = dataset.iloc[:, -1].values
 
 # Dividing the dataset into the train and test datasets
 x_train, x_test, y_train, y_test = train_test_split(inputs, labels, test_size=0.25, random_state=0)
+
+
+ovsp = SMOTE(random_state=1)
+unsp = RandomUnderSampler(random_state=1)
+
+ovsp_inputs, ovsp_labels = ovsp.fitresample(inputs, labels)
+print(Counter(ovsp_labels))
+
+unsp_inputs, unsp_labels = unsp.fitresample(inputs, labels)
+print(Counter(unsp_labels))
+
+
 
 st_x = StandardScaler()
 x_train = st_x.fit_transform(x_train)
